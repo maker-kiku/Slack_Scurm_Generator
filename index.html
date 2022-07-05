@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>스크럼 생성기</title>
+</head>
+<body>
+   <div>
+      <!-- <input type="text" id="input"><br> -->
+      닉네임: <input type="text" name="name" id="name"/><br/>
+      출근 날짜: <input type="date" name="time" id="date"/><br/>
+      출근 시각: <input type="time" id="time" value="10:00" min="00:00" max="24:00"/><br/>
+      업무 내용: <br><textarea placeholder="1. 키쿠와 함께 개발하기" type="text" name="context" id="context" cols="30" rows="5"></textarea><br/>
+      
+      <button onclick="output()">스크럼 생성하기</button>
+   </div><br><br>
+   <textarea id="output" cols="30" rows="10"></textarea>
+   <script>
+      var week = new Array('목', '금', '토', '일', '월', '화', '수'); // 요일
+
+      date = new Date(); // 오늘 날짜 생성
+      year = date.getFullYear();
+      month = date.getMonth() + 1;
+      day = date.getDate() + 1;
+      document.getElementById('date').valueAsDate = new Date(year, month - 1, day + 1);
+
+      function output(){
+         var dateInput = document.getElementById("date").value;
+         var strDate = dateInput.split('-');
+         var resultDate = new Date(strDate[0], strDate[1], strDate[2]);
+
+         var text = "*<" + document.getElementById("name").value + " 스크럼 " + strDate[1] + strDate[2] + "(" + week[resultDate.getDay()] + ")>*\n";
+         text += "*업무형태 : 현장(출근 ";
+         text += document.getElementById("time").value;
+         text += ")*\n*업무내용 :*\n";
+         text += document.getElementById("context").value;
+         document.getElementById("output").value = text;
+      }
+   </script>
+</body>
+</html>
