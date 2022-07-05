@@ -4,23 +4,26 @@
     <title>스크럼 생성기</title>
 </head>
 <body>
-   <div>
-      <!-- <input type="text" id="input"><br> -->
-      닉네임: <input type="text" name="name" id="name"/><br/>
-      출근 날짜: <input type="date" name="time" id="date"/><br/>
-      출근 시각: <input type="time" id="time" value="10:00" min="00:00" max="24:00"/><br/>
-      업무 내용: <br><textarea placeholder="1. 키쿠와 함께 개발하기" type="text" name="context" id="context" cols="30" rows="5"></textarea><br/>
+   <h1>슬랙 스크럼 생성기</h1>
       
-      <button onclick="output()">스크럼 생성하기</button>
-   </div><br><br>
-   <textarea id="output" cols="30" rows="10"></textarea>
+   닉네임: <input type="text" name="name" id="name"/><br>
+   출근 날짜: <input type="date" name="time" id="date"/><br>
+   출근 시각: <input type="time" id="time" value="10:00" min="00:00" max="24:00"/><br>
+   업무 내용: <br><textarea placeholder="1. 키쿠와 함께 개발하기" type="text" name="context" id="context" cols="30" rows="5"></textarea><br>
+   
+   <button onclick="output()">스크럼 생성하기</button><br><br>
+
+   <textarea id="output" cols="30" rows="10"></textarea><br>
+   <button onclick="copyToClipboard()">스크럼 복사하기</button>
+
    <script>
       var week = new Array('목', '금', '토', '일', '월', '화', '수'); // 요일
+      var text = " ";
 
-      date = new Date(); // 오늘 날짜 생성
-      year = date.getFullYear();
-      month = date.getMonth() + 1;
-      day = date.getDate() + 1;
+      var date = new Date(); // 오늘 날짜 생성
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var day = date.getDate() + 1;
       document.getElementById('date').valueAsDate = new Date(year, month - 1, day + 1);
 
       function output(){
@@ -28,12 +31,22 @@
          var strDate = dateInput.split('-');
          var resultDate = new Date(strDate[0], strDate[1], strDate[2]);
 
-         var text = "*<" + document.getElementById("name").value + " 스크럼 " + strDate[1] + strDate[2] + "(" + week[resultDate.getDay()] + ")>*\n";
+         text = "*<" + document.getElementById("name").value + " 스크럼 " + strDate[1] + strDate[2] + "(" + week[resultDate.getDay()] + ")>*\n";
          text += "*업무형태 : 현장(출근 ";
          text += document.getElementById("time").value;
          text += ")*\n*업무내용 :*\n";
          text += document.getElementById("context").value;
          document.getElementById("output").value = text;
+      }
+
+      function copyToClipboard(val) {
+         var t = document.createElement("textarea");
+         document.body.appendChild(t);
+         t.value = text;
+         t.select();
+         document.execCommand('copy');
+         document.body.removeChild(t);
+         alert('스크럼을 복사하였습니다');
       }
    </script>
 </body>
